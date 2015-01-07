@@ -180,21 +180,15 @@ Dissonance::process(const float *const *inputBuffers, Vamp::RealTime timestamp)
 	mags.values.push_back(sqrt(real * real + imag * imag) / (m_blockSize/2));
         freqs.values.push_back(freq);
     }
-    // Magnitude derivatives wrt frequency
-    Feature diffs;
-    diffs.values.push_back(0.0f);
-    for(size_t i = 1; i <= m_blockSize/2; ++i){
-        diffs.values.push_back(mags.values[i] - mags.values[i-1]);
-    }
     // Low-pass filtering the spectrum: Reversal for backward-forward filtering
     // backward-forward filtering results in a linear-phase filter
-    Feature rev_diffs;
+    Feature rev_mags;
     for(size_t i = 0; i <= m_blockSize/2; ++i){
-        rev_diffs.values.push_back(diffs.values[m_blockSize/2-i]);
+        rev_mags.values.push_back(mags.values[m_blockSize/2-i]);
     }   
     Feature rev_outs;
-    rev_outs.values.resize(m_blockSize/2);    
-    lpf->in = rev_diffs.values.data();
+    rev_outs.values.resize(m_blockSize/2);
+    lpf->in = rev_mags.values.data();
     lpf->out = rev_outs.values.data();
     afilter(lpf, m_blockSize/2); // backward filter
     for(size_t i = 0; i <= m_blockSize/2; ++i){
@@ -206,18 +200,19 @@ Dissonance::process(const float *const *inputBuffers, Vamp::RealTime timestamp)
         if(lpf->in[i]<0.0f)
             lpf->in[i]=0.0f;     // half-wave rectify
     }
-    // Derivative of smoothed rectified magnitudes
-    Feature zcpeaks;
-    zcpeaks.values.push_back(0.0f);
+    // Magnitude derivatives wrt frequency
+    Feature diffs;
+    diffs.values.push_back(0.0f);
     for(size_t i = 1; i <= m_blockSize/2; ++i){
-        zcpeaks.values.push_back(rev_outs.values[i] - rev_outs.values[i-1]);
+        diffs.values.push_back(mags.values[i] - mags.values[i-1]);
     }
+
     // Peak finding (spectral derivatives' zero crossings)
     float thresh = 1e-9f;
     vector<size_t> peak_idx;
     for(size_t i = 1; i <= m_blockSize/2; ++i){
         // zero crossing detector
-        if( (zcpeaks.values[i-1] > thresh) && (zcpeaks.values[i] < -thresh) )
+        if( (diffs.values[i-1] > thresh) && (diffs.values[i] < -thresh) )
             peak_idx.push_back(i);
     }
 
