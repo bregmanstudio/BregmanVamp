@@ -6,7 +6,7 @@
  * A Vamp plugin that calculates the dissonance function of the
  * frequency domain representation of each block of audio.
  *
- * Author: Michael A. Casey, Dartmouth College, USA
+ * Author: Michael A. Casey, Dartmouth College, USA (2015)
  *
 */
 
