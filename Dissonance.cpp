@@ -139,9 +139,9 @@ Dissonance::getOutputDescriptors() const
     OutputList list;
 
     OutputDescriptor d;
-    d.identifier = "logdissonance";
-    d.name = "Log Dissonance";
-    d.description = "Dissonance function of the log weighted frequency spectrum";
+    d.identifier = "lineardissonance";
+    d.name = "Dissonance";
+    d.description = "Dissonance function of the linear frequency spectrum";
     d.unit = "Diss";
     d.hasFixedBinCount = true;
     d.binCount = 1;
@@ -150,10 +150,10 @@ Dissonance::getOutputDescriptors() const
     d.sampleType = OutputDescriptor::OneSamplePerStep;
     list.push_back(d);
 
-    d.identifier = "lineardissonance";
-    d.name = "Linear Dissonance";
-    d.description = "Dissonance function of the linear frequency spectrum";
-    list.push_back(d);
+    //    d.identifier = "logdissonance";
+    //    d.name = "Log Dissonance";
+    //    d.description = "Dissonance function of the log weighted frequency spectrum";
+    //    list.push_back(d);
 
     return list;
 }
