@@ -1,0 +1,56 @@
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix vamp:     <http://purl.org/ontology/vamp/> .
+@prefix plugbase: <http://vamp-plugins.org/rdf/plugins/vamp-example-plugins#> .
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix dc:       <http://purl.org/dc/elements/1.1/> .
+@prefix af:       <http://purl.org/ontology/af/> .
+@prefix foaf:     <http://xmlns.com/foaf/0.1/> .
+@prefix cc:       <http://web.resource.org/cc/> .
+@prefix :         <#> .
+
+<>  a   vamp:PluginDescription ;
+    foaf:maker          <http://www.vamp-plugins.org/doap.rdf#template-generator> ;
+    foaf:primaryTopic   <http://vamp-plugins.org/rdf/plugins/vamp-example-plugins> .
+
+:vamp-example-plugins a  vamp:PluginLibrary ;
+    vamp:identifier "vamp-example-plugins"  ; 
+    foaf:page <http://www.vamp-plugins.org/plugin-doc/vamp-example-plugins.html> ;
+    vamp:available_plugin plugbase:dissonance ; 
+    .
+plugbase:dissonance a   vamp:Plugin ;
+    dc:title              "Dissonance" ;
+    vamp:name             "Dissonance" ;
+    dc:description        "Calculate the dissonance function of the spectrum of the input signal" ;
+    foaf:page <http://www.vamp-plugins.org/plugin-doc/vamp-example-plugins.html#dissonance> ;
+    foaf:maker            [ foaf:name "Bregman Media Labs" ] ; 
+    cc:license            <http://creativecommons.org/licenses/BSD/> ;
+    dc:rights             "Freely redistributable (BSD license)" ;
+    vamp:identifier       "dissonance" ;
+    vamp:vamp_API_version vamp:api_version_2 ;
+    owl:versionInfo       "2" ;
+    vamp:input_domain     vamp:FrequencyDomain ;
+
+    vamp:output      plugbase:dissonance_output_logdissonance ;
+    vamp:output      plugbase:dissonance_output_lineardissonance ;
+    .
+plugbase:dissonance_output_logdissonance a  vamp:DenseOutput ;
+    vamp:identifier       "logdissonance" ;
+    dc:title              "Log Dissonance" ;
+    dc:description        "Dissonance function (log)"  ;
+    vamp:fixed_bin_count  "true" ;
+    vamp:unit             "Diss" ;
+    vamp:bin_count        1 ;
+    vamp:bin_names        ( "");
+    vamp:computes_signal_type  af:LogDissonance ;
+    .
+plugbase:dissonance_output_lineardissonance a  vamp:DenseOutput ;
+    vamp:identifier       "lineardissonance" ;
+    dc:title              "Linear Dissonance" ;
+    dc:description        "Dissonance function (linear)"  ;
+    vamp:fixed_bin_count  "true" ;
+    vamp:unit             "Diss" ;
+    vamp:bin_count        1 ;
+    vamp:bin_names        ( "");
+    vamp:computes_signal_type  af:LinearDissonance ;
+    .
