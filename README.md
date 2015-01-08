@@ -40,7 +40,7 @@ Open Terminal.app
 
 type:
 
-`mkdir ~/Library/Audio/Plugins/Vamp`
+`mkdir ~/Library/Audio/Plug-Ins/Vamp`
 
 ### Get this repository:
 
@@ -52,7 +52,7 @@ type:
 mkdir BregmanVamp
 cd BregmanVamp
 git clone https://github.com/bregmanstudio/BregmanVamp .
-cp vamp-bregman-plugins.dylib ~/Library/Audio/Plugins/Vamp
+cp vamp-bregman-plugins.dylib ~/Library/Audio/Plug-Ins/Vamp
 ```
 
 
