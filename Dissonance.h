@@ -33,6 +33,7 @@ public:
     virtual ~Dissonance();
 
     bool initialise(size_t channels, size_t stepSize, size_t blockSize);
+    void initialise_filter();
     void reset();
 
     InputDomain getInputDomain() const { return FrequencyDomain; }

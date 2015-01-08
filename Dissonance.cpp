@@ -41,6 +41,19 @@ using std::endl;
 #define isinf(x) false
 #endif
 
+// quick and dirty Butterworth low-pass filter coefficients (from scipy, cutoff = 0.25)
+// b, a
+#define LPF_ORDER 11
+float lpf_coeffs[2][LPF_ORDER] = 
+    {{1.10559099e-05,   1.10559099e-04,   4.97515946e-04,
+          1.32670919e-03,   2.32174108e-03,   2.78608930e-03,
+          2.32174108e-03,   1.32670919e-03,   4.97515946e-04,
+          1.10559099e-04,   1.10559099e-05},
+    {1.00000000e+00,  -4.98698526e+00,   1.19364368e+01,
+         -1.77423718e+01,   1.79732280e+01,  -1.28862417e+01,
+         6.59320221e+00,  -2.36909169e+00,   5.70632706e-01,
+         -8.30176785e-02,   5.52971437e-03}};
+
 
 Dissonance::Dissonance(float inputSampleRate) :
     Plugin(inputSampleRate),
@@ -48,18 +61,14 @@ Dissonance::Dissonance(float inputSampleRate) :
     m_blockSize(0)
 {
 
-    // quick and dirty Butterworth low-pass filter coefficients (from scipy, cutoff = 0.25)
-    // b, a
-    #define LPF_ORDER 11
-    float lpf_coeffs[2][LPF_ORDER] = {{1.10559099e-05,   1.10559099e-04,   4.97515946e-04,
-                                       1.32670919e-03,   2.32174108e-03,   2.78608930e-03,
-                                       2.32174108e-03,   1.32670919e-03,   4.97515946e-04,
-                                       1.10559099e-04,   1.10559099e-05},
-                                      {1.00000000e+00,  -4.98698526e+00,   1.19364368e+01,
-                                       -1.77423718e+01,   1.79732280e+01,  -1.28862417e+01,
-                                       6.59320221e+00,  -2.36909169e+00,   5.70632706e-01,
-                                       -8.30176785e-02,   5.52971437e-03}};
+    initialise_filter();
+}
 
+Dissonance::~Dissonance()
+{
+}
+
+void Dissonance::initialise_filter(){
     lpf = (FILTER*) calloc(1,sizeof(FILTER));
     lpf->numb = LPF_ORDER;
     lpf->numa = LPF_ORDER; // Assume A[0]=1 and crop array
@@ -71,13 +80,6 @@ Dissonance::Dissonance(float inputSampleRate) :
         lpf->coeffs[lpf->numb+i-1] = lpf_coeffs[1][i];
     }
     ifilter(lpf);
-}
-
-Dissonance::~Dissonance()
-{
-    if(lpf){
-        free_filter(lpf);
-    }
 }
 
 string
@@ -180,6 +182,8 @@ Dissonance::process(const float *const *inputBuffers, Vamp::RealTime timestamp)
     FeatureSet returnFeatures; // output "scale" aggregator
     Feature feature; // output feature
 
+    initialise_filter();
+
     Feature freqs;
     Feature mags;
     freqs.values.push_back(0);
@@ -269,6 +273,8 @@ Dissonance::process(const float *const *inputBuffers, Vamp::RealTime timestamp)
         feature.values.push_back(diss_val);
     }
     returnFeatures[0].push_back(feature);
+
+    free_filter(lpf);
     return returnFeatures;
 }
 
