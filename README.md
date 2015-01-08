@@ -19,14 +19,14 @@ sudo cp BregmanVamp/vamp-bregman-plugins.so /usr/local/lib/vamp
 
 ## OSX Installation
 
-* Install Homebrew packet manager:
+### Install Homebrew packet manager:
 
 Visit http://brew.sh/ for instructions,
 or type the following into the Terminal.app application (use Spotlight to find the application "Terminal"):
 
 `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-* Install dependencies:
+### Install dependencies:
 
 Open Terminal.app
 
@@ -34,7 +34,7 @@ type:
 
 `brew install libvorbis --universal libsndfile --universal libogg --universal flac --universal git`
 
-* Create plugins folder:
+### Create plugins folder:
 
 Open Terminal.app
 
@@ -42,7 +42,7 @@ type:
 
 `mkdir ~/Library/Audio/Plugins/Vamp`
 
-* Get this repository:
+### Get this repository:
 
 Open Terminal.app
 
