@@ -172,7 +172,8 @@ Dissonance::process(const float *const *inputBuffers, Vamp::RealTime timestamp)
 
     Feature freqs;
     Feature mags;
-    
+    freqs.values.push_back(0);
+    mags.values.push_back(0);
     for (size_t i = 1; i <= m_blockSize/2; ++i) {
 	double freq = (double(i) * m_inputSampleRate) / m_blockSize;
 	double real = inputBuffers[0][i*2];
@@ -257,11 +258,6 @@ Dissonance::process(const float *const *inputBuffers, Vamp::RealTime timestamp)
         feature.values.push_back(diss_val);
     }
     returnFeatures[0].push_back(feature);
-    feature.values.clear();
-    if (!isnan(diss_val) && !isinf(diss_val)) {
-        feature.values.push_back(log10f(diss_val));
-    }
-    returnFeatures[1].push_back(feature);
     return returnFeatures;
 }
 
