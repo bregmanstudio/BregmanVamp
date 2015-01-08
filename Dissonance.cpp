@@ -229,7 +229,7 @@ Dissonance::process(const float *const *inputBuffers, Vamp::RealTime timestamp)
     }
 
     if (!peak_idx.size()){ // Abort if no peaks
-        std::cout << "Warning: zero-length peak_idx" << endl;
+        // std::cout << "Dissonance:: Warning: zero-length peak_idx" << endl;
         feature.hasTimestamp = false;
         feature.values.push_back(0.0f);
         returnFeatures[0].push_back(feature);
@@ -240,7 +240,7 @@ Dissonance::process(const float *const *inputBuffers, Vamp::RealTime timestamp)
     std::vector<IdxSortPair> arg_idx;
     for(size_t i = 0; i < peak_idx.size(); ++i){
         arg_idx.push_back(IdxSortPair(mags.values[peak_idx[i]], peak_idx[i]));
-        std::cout << "(" << mags.values[peak_idx[i]] << "," << peak_idx[i] << ")" << endl;
+        // std::cout << "(" << mags.values[peak_idx[i]] << "," << peak_idx[i] << ")" << endl;
     }
     // Reverse sorting by magnitude
     std::sort(arg_idx.rbegin(), arg_idx.rend(), IdxComparator);
