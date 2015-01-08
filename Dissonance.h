@@ -42,6 +42,9 @@ public:
     std::string getDescription() const;
     std::string getMaker() const;
     int getPluginVersion() const;
+    size_t getPreferredStepSize() const; 
+    size_t getPreferredBlockSize() const;
+
     std::string getCopyright() const;
 
     OutputList getOutputDescriptors() const;

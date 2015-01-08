@@ -116,6 +116,16 @@ Dissonance::getCopyright() const
     return "Freely redistributable (BSD license)";
 }
 
+size_t 
+Dissonance::getPreferredStepSize() const { 
+    return 2048; 
+}
+
+size_t 
+Dissonance::getPreferredBlockSize() const { 
+    return 8192; 
+}
+
 bool
 Dissonance::initialise(size_t channels, size_t stepSize, size_t blockSize)
 {
@@ -198,14 +208,15 @@ Dissonance::process(const float *const *inputBuffers, Vamp::RealTime timestamp)
     afilter(lpf, m_blockSize/2); // forward filter
     // Half-wave rectification
     for(size_t i = 0; i <= m_blockSize/2; ++i){
-        if(lpf->in[i]<0.0f)
-            lpf->in[i]=0.0f;     // half-wave rectify
+        if(rev_outs.values[i]<0.0f){
+            rev_outs.values[i]=0.0f;     // half-wave rectify
+        }
     }
     // Magnitude derivatives wrt frequency
     Feature diffs;
     diffs.values.push_back(0.0f);
     for(size_t i = 1; i <= m_blockSize/2; ++i){
-        diffs.values.push_back(mags.values[i] - mags.values[i-1]);
+        diffs.values.push_back(rev_outs.values[i] - rev_outs.values[i-1]);
     }
 
     // Peak finding (spectral derivatives' zero crossings)
