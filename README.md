@@ -55,7 +55,7 @@ git clone https://github.com/bregmanstudio/BregmanVamp .
 cp vamp-bregman-plugins.dylib ~/Library/Audio/Plug-Ins/Vamp
 ```
 
+### Sonic Visualizer
 
-
-
+Make sure the plugin is installed correctly by opening [Sonic Visualizer](http://www.sonicvisualiser.org/), and going to the menu bar item "Transforms/Analysis By Maker/Bregman Media Labs/Dissonance: Linear Dissonance"
 
